@@ -1,8 +1,8 @@
 
 
-### Alchemy Road to web 3 week 3 
+### Alchemy Road to web  week 3 
 
-Challenge 3:
+Challenge:
 - Define struct that holds many attribute and implement inside the dynamic nft
 
 - Struct fields value will be determined by random number generater.
