@@ -18,8 +18,8 @@ const main= async()=>{
 
 main();
 
-// Contract deploy at ------>0x72279361fA927b618Cf282b1994bC0C6861DF598
+// Contract deploy at ------> 0xD3BD8A57d18ea78ff389D7d5836Af1BdadC61bF2
 
 // How to verify a smart contract
-//npx hardhat verify --network mumbai 0x72279361fA927b618Cf282b1994bC0C6861DF598
-//          This is the network<--^           ^-->This is the ChainBattles smart contract adress
+//npx hardhat verify --network mumbai  0xD3BD8A57d18ea78ff389D7d5836Af1BdadC61bF2
+//        This is the network<--^                  ^-->This is the ChainBattles smart contract adress

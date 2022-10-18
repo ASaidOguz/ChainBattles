@@ -11,20 +11,38 @@ contract ChainBattles is ERC721URIStorage{
       using Strings for uint256;
       using Counters for Counters.Counter;
       Counters.Counter private _tokenIds;
-     
-      mapping(uint256=>uint256) public tokenIdtoLevels;
+      uint randomseed=0;
+      struct Attributes {
+        uint256 level;
+        uint256 speed;
+        uint256 strength;
+        uint256 life;
+    }
+      mapping(uint256=>Attributes) public tokenIdtoLevels;
 
       constructor() ERC721("Chain Battles","CHBTLS"){
 
-      }
+    }
+       //random function create random numbers by using b.timestamp
+       //b.diffculty
+       function random(uint number) public  returns(uint){
+        if (randomseed>100){randomseed=0;}
+        randomseed++;
+        return uint(keccak256(abi.encodePacked(block.timestamp,block.difficulty,randomseed,  
+        msg.sender))) % number;
+        
+    }
        function generateCharacter(uint256 tokenId) public view returns(string memory){
        //It's concatanate strings to create nft
         bytes memory svg = abi.encodePacked(
             '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350">',
             '<style>.base { fill: white; font-family: serif; font-size: 14px; }</style>',
             '<rect width="100%" height="100%" fill="black" />',
-            '<text x="50%" y="40%" class="base" dominant-baseline="middle" text-anchor="middle">',"Warrior",'</text>',
-            '<text x="50%" y="50%" class="base" dominant-baseline="middle" text-anchor="middle">', "Level: ",getLevels(tokenId),'</text>',
+            '<text x="50%" y="40%" class="base" dominant-baseline="middle" text-anchor="start">',"Warrior",'</text>',
+            '<text x="50%" y="50%" class="base" dominant-baseline="middle" text-anchor="start">', "Level: ",getLevels(tokenId).level.toString(),'</text>',
+            '<text x="50%" y="60%" class="base" dominant-baseline="middle" text-anchor="start">', "Speed: ",getLevels(tokenId).speed.toString(),'</text>',
+            '<text x="50%" y="70%" class="base" dominant-baseline="middle" text-anchor="start">', "Strength: ",getLevels(tokenId).strength.toString(),'</text>',
+            '<text x="50%" y="80%" class="base" dominant-baseline="middle" text-anchor="start">', "life: ",getLevels(tokenId).life.toString(),'</text>',
             '</svg>'
         );
         //This will create the svg dynamicly with base34 encoder...
@@ -36,9 +54,14 @@ contract ChainBattles is ERC721URIStorage{
 
         }
         //getLevels takes tokenId and returns the levels as string format
-        function getLevels(uint256 tokenId) public view returns (string memory) {
-            uint256 levels = tokenIdtoLevels[tokenId];
-             return levels.toString();
+        function getLevels(uint256 tokenId) public view returns (Attributes memory) {
+          Attributes memory attribute ;
+
+            attribute.level= tokenIdtoLevels[tokenId].level;
+            attribute.speed=tokenIdtoLevels[tokenId].speed;
+            attribute.strength=tokenIdtoLevels[tokenId].strength;
+            attribute.life=tokenIdtoLevels[tokenId].life;          
+            return (attribute);
         }
 
         function getTokenURI(uint256 tokenId) public view returns (string memory){
@@ -64,7 +87,7 @@ contract ChainBattles is ERC721URIStorage{
         uint256 newItemId = _tokenIds.current();
         _safeMint(msg.sender, newItemId);
         //newItemId will start from level 0 
-        tokenIdtoLevels[newItemId] = 0;
+        tokenIdtoLevels[newItemId].level = 0;
         // _setTokenURI function came from ERC721URIStorage contract...
         _setTokenURI(newItemId, getTokenURI(newItemId));
     }
@@ -72,8 +95,11 @@ contract ChainBattles is ERC721URIStorage{
     function train(uint256 tokenId) public {
         require(_exists(tokenId));
         require(ownerOf(tokenId) == msg.sender, "You must own this NFT to train it!");
-        uint256 currentLevel = tokenIdtoLevels[tokenId];
-        tokenIdtoLevels[tokenId] = currentLevel + 1;
+        uint256 currentLevel = tokenIdtoLevels[tokenId].level;
+        tokenIdtoLevels[tokenId].level = currentLevel + 1;
+        tokenIdtoLevels[tokenId].speed+=random(100);
+        tokenIdtoLevels[tokenId].strength+=random(100);
+        tokenIdtoLevels[tokenId].life+=random(100);
         _setTokenURI(tokenId, getTokenURI(tokenId));
     }
 }
