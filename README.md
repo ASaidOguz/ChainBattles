@@ -3,11 +3,11 @@
 ### Alchemy Road to web 3 week 3 
 
 Challenge:
-- Define struct that holds many attribute and implement inside the dynamic nft
+- Define struct that holds many attribute and implement inside the dynamic nft..
 
-- Struct fields value will be determined by random number generater.
+- Struct fields value will be determined by random number generater...
 
-
+- Extra : added random number test scipt to control the function in local network...
 Running some of the following tasks:
 
 ```shell
