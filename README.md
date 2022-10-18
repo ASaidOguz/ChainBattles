@@ -8,6 +8,7 @@ Challenge:
 - Struct fields value will be determined by random number generater...
 
 - Extra : added random number test script to control the function in local network...
+
 Running some of the following tasks:
 
 ```shell
